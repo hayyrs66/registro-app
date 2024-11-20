@@ -65,7 +65,7 @@ const { id, title } = Astro.props;
         const fileNameElement = document.getElementById(`${input.id}-filename`);
 
         if (event.dataTransfer.files.length > 0) {
-          // Si se arrastra un archivo
+          // Si se arrastra un archivo local
           input.files = event.dataTransfer.files;
           fileNameElement.textContent = input.files[0].name;
         } else if (event.dataTransfer.items.length > 0) {
@@ -73,17 +73,26 @@ const { id, title } = Astro.props;
           const item = event.dataTransfer.items[0];
           if (item.kind === "string") {
             item.getAsString(async (url) => {
-              fileNameElement.textContent = url;
+              try {
+                fileNameElement.textContent = "Descargando archivo...";
+                const response = await fetch(url);
+                if (!response.ok) {
+                  throw new Error(`Error al descargar: ${response.statusText}`);
+                }
+                const blob = await response.blob();
+                const fileName = url.split("/").pop() || "archivo_descargado";
+                const file = new File([blob], fileName, { type: blob.type });
 
-              // Opcional: descargar la URL como archivo
-              const response = await fetch(url);
-              const blob = await response.blob();
-              const file = new File([blob], `downloaded_file`, { type: blob.type });
+                // Asignar el archivo descargado al input
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                input.files = dataTransfer.files;
 
-              // Asignar el archivo descargado al input
-              const dataTransfer = new DataTransfer();
-              dataTransfer.items.add(file);
-              input.files = dataTransfer.files;
+                fileNameElement.textContent = fileName;
+              } catch (error) {
+                fileNameElement.textContent = "Error al descargar el archivo";
+                console.error(error);
+              }
             });
           }
         }

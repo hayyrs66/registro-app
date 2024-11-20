@@ -1,0 +1,143 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Input from "../components/Input.astro";
+---
+
+<Layout title="Welcome to Astro.">
+  <main class="w-full p-8 h-full min-h-screen flex flex-col justify-center">
+    <div class="flex flex-col gap-2 mb-8">
+      <h2 class="font-medium text-white text-4xl">Sistema Registro.</h2>
+      <p class="text-white/70 tracking-tight">Guardar archivos automatizado.</p>
+    </div>
+    <form id="upload-form" class="w-full h-full flex flex-col">
+      <div class="flex w-full gap-4 mb-8">
+        <div class="flex flex-col gap-2 w-full">
+          <label for="carnet" class="text-white">Carnet</label>
+          <input
+            id="carnet"
+            name="carnet"
+            type="text"
+            class="w-full text-white/80 p-2 rounded-md border bg-transparent outline-none"
+            placeholder="Ingrese el carnet del estudiante"
+            required
+          />
+        </div>
+        <div class="flex flex-col gap-2 w-full">
+          <label for="nombre" class="text-white">Nombre del Estudiante</label>
+          <input
+            id="nombre"
+            name="nombre"
+            type="text"
+            class="w-full text-white/80 p-2 rounded-md border bg-transparent outline-none"
+            placeholder="Ingrese el nombre del estudiante"
+            required
+          />
+        </div>
+      </div>
+      <div class="w-full grid sm:justify-center sm:items-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
+        <Input id="input1" title="Carta de compromiso" />
+        <Input id="input2" title="DPI" />
+        <Input id="input3" title="Cierre de Estudios" />
+        <Input id="input4" title="Cursos Aprobados" />
+        <Input id="input5" title="Fotografía" />
+        <Input id="input6" title="Comprobante de pago" />
+      </div>
+      <div class="flex flex-col mt-8">
+        <label class="text-white mb-4" for="textarea">Datos</label>
+        <textarea
+          id="textarea"
+          name="textarea"
+          class="resize-none text-white/80 bg-transparent outline-none border rounded-md p-4"
+          rows="6"
+          placeholder="Introduce los datos..."
+        ></textarea>
+      </div>
+      <button
+        id="save-button"
+        class="bg-blue-600 mt-4 rounded-md w-fit px-4 py-1 text-white font-medium"
+        type="button"
+      >
+        Guardar
+      </button>
+    </form>
+  </main>
+</Layout>
+
+<script>
+  document.getElementById("save-button").addEventListener("click", async () => {
+    const carnet = document.getElementById("carnet").value.trim();
+    const nombreEstudiante = document.getElementById("nombre").value.trim();
+    const textarea = document.getElementById("textarea").value.trim();
+    const inputs = [...document.querySelectorAll('input[type="file"]')];
+
+    if (!carnet || !nombreEstudiante) {
+      alert("El carnet y el nombre del estudiante son obligatorios.");
+      return;
+    }
+
+    const folderName = `${nombreEstudiante}_${carnet}`;
+
+    try {
+      // Abrir el selector de directorios
+      const folderHandle = await window.showDirectoryPicker();
+
+      // Crear carpeta específica
+      const newFolderHandle = await folderHandle.getDirectoryHandle(folderName, {
+        create: true,
+      });
+
+      // Guardar el archivo de datos si el textarea no está vacío
+      if (textarea) {
+        const fileHandle = await newFolderHandle.getFileHandle("datos.txt", {
+          create: true,
+        });
+        const writable = await fileHandle.createWritable();
+        await writable.write(textarea);
+        await writable.close();
+      }
+
+      // Guardar cada archivo concatenando el carnet al nombre
+      for (let i = 0; i < inputs.length; i++) {
+        const file = inputs[i].files[0];
+        if (file) {
+          const originalFileName = file.name;
+          const fileExtension = originalFileName.substring(
+            originalFileName.lastIndexOf(".")
+          );
+
+          const baseFileName = [
+            "carta_compromiso",
+            "DPI",
+            "cierre_estudios",
+            "cursos_aprobados",
+            "foto",
+            "comprobante_pago",
+          ][i];
+
+          const fileName = `${carnet}_${baseFileName}${fileExtension}`;
+
+          // Eliminar cualquier archivo existente con el mismo nombre
+          try {
+            const existingFileHandle = await newFolderHandle.getFileHandle(fileName);
+            await existingFileHandle.remove();
+          } catch (e) {
+            // Ignorar si el archivo no existe
+          }
+
+          // Guardar el archivo nuevo
+          const fileHandle = await newFolderHandle.getFileHandle(fileName, {
+            create: true,
+          });
+          const writable = await fileHandle.createWritable();
+          await writable.write(file);
+          await writable.close();
+        }
+      }
+
+      alert("Archivos guardados exitosamente.");
+    } catch (error) {
+      console.error("Error al guardar los archivos:", error);
+      alert("Ocurrió un error. Por favor, revisa la consola.");
+    }
+  });
+</script>

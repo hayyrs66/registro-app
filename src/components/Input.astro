@@ -1,86 +1,89 @@
 ---
 const { id, title } = Astro.props;
 ---
+
 <div class="sm:max-w-md rounded-lg overflow-hidden">
-    <div class="md:flex">
-        <div class="w-full">
-            <label for={id} class="text-white">{title}</label>
-            <div
-                class="relative h-48 rounded-lg mt-2 border-2 border-white border-dashed flex justify-center items-center shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out"
-                drop-zone
-            >
-                <div class="absolute flex flex-col items-center">
-                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB60lEQVR4nO2Xu0oDQRRAByKGiCaVrVZqo2ihCFYKafwAP0AFmxQiaKeNliKkEhstfGBhqeArkkKs/AA/wAeoiJ1FmiODIy7jZJN9JJmFOTAQZvbeuWd3725WCIfD4XAogAHgCDgA+kUSAYaBd/74BEZFwiWSJ0N1ieTIUFvCfhnql7BXhuAS9skAWeDFUOR9nXMyNmuDyIyhuBug1zDfq9Z0pm0Q6QMqmkQH0G0ouFuteWW+gB5hA8AEsAOsAGk1ZxRRa2l1rIyZaHaxKWAEyAOTQK7G8VVFfGJyKnde7ZWKU0CevTXDU+kDGIxLRObiJ6eXN2D19ypHkegC7qhOMUaRos8+t0BnFJET/FmOUUT2jB/HYSXGqyR8Ah7UGWyPUUQ+zbZVbrmHibEwIltakle/nogqYogfUj3iZTOMyJmWZD1gfCQRCbChxZ+KoABlLUmhBSIFLb7sRDy4K+LB3VoK1yNeXI8kvUc6tA8u+TuTOBEJsOeJ3xUBwSKRNvWRJEdbYkWighPxAJS0K7IkmgywpNVQCpPkUEty3pBq/Wu41GrYD5Nknv9cAIvAQoPHokFCMhtGJAM8Yg9P8t0UWETJ5LWXWquoAFOhJDSZ5xZKPEaW0P5uzMlmA66bMK7UXrOhbyeHw+EQNvMNpdLm+XXXf90AAAAASUVORK5CYII=" alt="upload">
-                    <span class="block text-gray-500 font-semibold">Arrastrar archivo</span>
-                    <span class="block text-gray-400 font-normal mt-1">o click para subir</span>
-                </div>
-                <input
-                    class="w-full h-full cursor-pointer opacity-0"
-                    type="file"
-                    id={id}
-                    name={id}
-                    accept="*/*"
-                    required
-                    input-file
-                />
-            </div>
-            <!-- Aquí se mostrará el nombre del archivo o URL seleccionada -->
-            <p id={`${id}-filename`} class="text-gray-300 mt-2"></p>
+  <div class="md:flex">
+    <div class="w-full">
+      <label for={id} class="text-white">{title}</label>
+      <div
+        class="relative h-48 rounded-lg mt-2 border-2 border-white border-dashed flex justify-center items-center shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out"
+        drop-zone
+      >
+        <div class="absolute flex flex-col items-center">
+          <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB60lEQVR4nO2Xu0oDQRRAByKGiCaVrVZqo2ihCFYKafwAP0AFmxQiaKeNliKkEhstfGBhqeArkkKs/AA/wAeoiJ1FmiODIy7jZJN9JJmFOTAQZvbeuWd3725WCIfD4XAogAHgCDgA+kUSAYaBd/74BEZFwiWSJ0N1ieTIUFvCfhnql7BXhuAS9skAWeDFUOR9nXMyNmuDyIyhuBug1zDfq9Z0pm0Q6QMqmkQH0G0ouFuteWW+gB5hA8AEsAOsAGk1ZxRRa2l1rIyZaHaxKWAEyAOTQK7G8VVFfGJyKnde7ZWKU0CevTXDU+kDGIxLRObiJ6eXN2D19ypHkegC7qhOMUaRos8+t0BnFJET/FmOUUT2jB/HYSXGqyR8Ah7UGWyPUUQ+zbZVbrmHibEwIltakle/nogqYogfUj3iZTOMyJmWZD1gfCQRCbChxZ+KoABlLUmhBSIFLb7sRDy4K+LB3VoK1yNeXI8kvUc6tA8u+TuTOBEJsOeJ3xUBwSKRNvWRJEdbYkWighPxAJS0K7IkmgywpNVQCpPkUEty3pBq/Wu41GrYD5Nknv9cAIvAQoPHokFCMhtGJAM8Yg9P8t0UWETJ5LWXWquoAFOhJDSZ5xZKPEaW0P5uzMlmA66bMK7UXrOhbyeHw+EQNvMNpdLm+XXXf90AAAAASUVORK5CYII="
+            alt="upload"
+          />
+          <span class="block text-gray-500 font-semibold"
+            >Arrastrar archivo</span
+          >
+          <span class="block text-gray-400 font-normal mt-1"
+            >o click para subir</span
+          >
         </div>
+        <input
+          class="w-full h-full cursor-pointer opacity-0"
+          type="file"
+          id={id}
+          name={id}
+          accept="*/*"
+          required
+          input-file
+        />
+      </div>
+      <!-- Aquí se mostrará el nombre del archivo o URL seleccionada -->
+      <p id={`${id}-filename`} class="text-gray-300 mt-2"></p>
     </div>
+  </div>
 </div>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    // Seleccionar todos los inputs con el atributo personalizado `input-file`
-    const fileInputs = document.querySelectorAll("[input-file]");
-
-    fileInputs.forEach((input) => {
-      input.addEventListener("change", (event) => {
-        const id = input.id;
-        const fileNameElement = document.getElementById(`${id}-filename`);
-        const file = event.target.files[0];
-        fileNameElement.textContent = file ? file.name : "No se seleccionó ningún archivo";
-      });
-    });
-
-    // Manejar los eventos de drag and drop
     const dropZones = document.querySelectorAll("[drop-zone]");
 
     dropZones.forEach((zone) => {
       zone.addEventListener("dragover", (event) => {
-        event.preventDefault(); // Evitar comportamiento predeterminado
-        zone.classList.add("border-blue-500"); // Indicar visualmente el drag
+        event.preventDefault();
+        zone.classList.add("border-blue-500");
       });
 
       zone.addEventListener("dragleave", () => {
-        zone.classList.remove("border-blue-500"); // Quitar indicación visual
+        zone.classList.remove("border-blue-500");
       });
 
       zone.addEventListener("drop", async (event) => {
-        event.preventDefault(); // Evitar comportamiento predeterminado
+        event.preventDefault();
         zone.classList.remove("border-blue-500");
 
         const input = zone.querySelector("input[type='file']");
         const fileNameElement = document.getElementById(`${input.id}-filename`);
 
         if (event.dataTransfer.files.length > 0) {
-          // Si se arrastra un archivo local
+          // Manejar archivos locales
           input.files = event.dataTransfer.files;
           fileNameElement.textContent = input.files[0].name;
         } else if (event.dataTransfer.items.length > 0) {
-          // Si se arrastra una URL
+          // Manejar URLs arrastradas
           const item = event.dataTransfer.items[0];
           if (item.kind === "string") {
             item.getAsString(async (url) => {
               try {
                 fileNameElement.textContent = "Descargando archivo...";
-                const response = await fetch(url);
+
+                // Solicita al endpoint que descargue el archivo
+                const response = await fetch(
+                  `/api/downloadFile?url=${encodeURIComponent(url)}`
+                );
                 if (!response.ok) {
                   throw new Error(`Error al descargar: ${response.statusText}`);
                 }
+
                 const blob = await response.blob();
-                const fileName = url.split("/").pop() || "archivo_descargado";
+                const fileName =
+                  response.headers
+                    .get("content-disposition")
+                    ?.match(/filename="(.+)"/)?.[1] || "archivo_descargado";
                 const file = new File([blob], fileName, { type: blob.type });
 
                 // Asignar el archivo descargado al input
